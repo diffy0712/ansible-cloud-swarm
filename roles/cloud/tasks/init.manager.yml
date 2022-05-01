@@ -1,0 +1,20 @@
+---
+  - name: Init a new swarm with default parameters
+    docker_swarm:
+      state: present
+      advertise_addr: "{{ swarm_remote_addr }}"
+    register: result
+
+  - name: Get join-token for manager nodes
+    set_fact:
+      join_token_manager: "{{ hostvars[groups['managers'][0]].result.swarm_facts.JoinTokens.Manager }}"
+
+  - name: Join other managers
+    community.general.docker_swarm:
+      state: join
+      join_token: "{{ join_token_manager }}"
+      advertise_addr: "{{ swarm_remote_addr }}"
+      remote_addrs: "{{ swarm_remote_addr }}"
+    when:
+      - inventory_hostname in groups['managers']
+      - inventory_hostname != groups['managers'][0]

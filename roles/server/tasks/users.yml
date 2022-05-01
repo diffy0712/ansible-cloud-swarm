@@ -1,0 +1,18 @@
+---
+- include_role:
+    name: diffy0712.sysadmin_user_manager
+  vars:
+    sysadmin_user: "{{ sysadmins.ansible.sysadmin_user }}"
+    sysadmin_password: "{{ sysadmins.ansible.sysadmin_password }}"
+    sysadmin_shell: "{{ sysadmins.ansible.sysadmin_shell }}"
+    sysadmin_issudoer: "{{ sysadmins.ansible.sysadmin_issudoer }}"
+    sysadmin_keys: "{{ sysadmins.ansible.sysadmin_keys }}"
+
+- include_role:
+    name: diffy0712.sysadmin_user_manager
+  vars:
+    sysadmin_user: "{{ sysadmins.diffy0712.sysadmin_user }}"
+    sysadmin_password: "{{ sysadmins.diffy0712.sysadmin_password }}"
+    sysadmin_shell: "{{ sysadmins.diffy0712.sysadmin_shell }}"
+    sysadmin_issudoer: "{{ sysadmins.diffy0712.sysadmin_issudoer }}"
+    sysadmin_keys: "{{ sysadmins.diffy0712.sysadmin_keys }}"

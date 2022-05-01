@@ -1,0 +1,22 @@
+---
+  - name: login to GitLab remote registry using your account
+    docker_login:
+      username: "{{ gitlab_registry_username }}"
+      password: "{{ gitlab_registry_authkey }}"
+      registry: registry.gitlab.com
+
+  - name: Inlcude manager init task
+    include: ./init.manager.yml
+    when: node_type == 'manager'
+
+  - name: Inlcude node init task
+    include: ./init.node.yml
+    when: node_type == 'node'
+
+  - name: Replace node labels with new labels
+    docker_node:
+      hostname: "{{ item.node }}"
+      labels: "{{ item.labels }}"
+      labels_state: "replace"
+    loop: "{{ node_labels }}"
+    when: node_type == 'manager'

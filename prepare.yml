@@ -1,0 +1,16 @@
+- hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    ansible_user: root
+  pre_tasks:
+    - name: Update apt cache.
+      apt:
+        update_cache: true
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+
+  tasks:
+    - name: 'Create users'
+      include: ./roles/server/tasks/users.yml

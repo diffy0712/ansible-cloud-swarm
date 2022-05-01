@@ -1,0 +1,58 @@
+---
+  - name: Create swarm grafana stack directory
+    file:
+      path: "{{ cloud_swarm_root }}grafana"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Create config directory
+    file:
+      path: "{{ cloud_swarm_root }}grafana/config"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy grafana config
+    copy:
+      src: ./files/grafana/grafana.ini
+      dest: '{{ cloud_swarm_root }}grafana/config/grafana.ini'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy grafana dashboards config
+    copy:
+      src: ./files/grafana/dashboards.yml
+      dest: '{{ cloud_swarm_root }}grafana/config/dashboards.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy grafana privisionings
+    copy:
+      src: ./files/grafana/provisioning
+      dest: '{{ cloud_swarm_root }}grafana/config'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      
+  - name: Copy docker-compose
+    template:
+      src: ./templates/docker-compose.grafana.yml.j2
+      dest: '{{ cloud_swarm_root }}grafana/docker-compose.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      trim_blocks: false
+      
+  - name: Deploy swarm grafana stack
+    docker_stack:
+      state: present
+      name: "{{ cloud_swarm_stack }}-grafana"
+      compose:
+        - '{{ cloud_swarm_root }}grafana/docker-compose.yml'
+      prune: true
+      with_registry_auth: true

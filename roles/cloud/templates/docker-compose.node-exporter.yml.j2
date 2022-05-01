@@ -1,0 +1,43 @@
+version: '3.2'
+
+services:
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.3.1
+    restart: unless-stopped
+    networks:
+      - monitoring-public
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.44.0
+    restart: unless-stopped
+    networks:
+      - monitoring-public
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+networks:
+  monitoring-public:
+    external: true

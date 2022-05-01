@@ -1,0 +1,20 @@
+---
+  - include: './init.yml'
+
+  - include: './_traefik.yml'
+    when: node_type == 'manager'
+
+  - include: './portrainer.yml'
+    when: node_type == 'manager'
+
+  - include: './_prometheus.yml'
+    when: node_type == 'manager'
+
+  - include: './_grafana.yml'
+    when: node_type == 'manager'
+
+  - include: './_node_exporter.yml'
+    when: node_type == 'manager'
+
+  - include: './homer.yml'
+    when: node_type == 'manager'

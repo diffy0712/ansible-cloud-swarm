@@ -1,0 +1,19 @@
+
+---
+ApiVersion: 1
+
+deleteDatasources:
+  - name: Prometheus
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus-ds
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    version: 1
+    editable: true
+    ## FIXME: use variables from encrypted vars
+    basicAuthUser: admin
+    basicAuthPassword: F45LjPLyEeQqwQ8w

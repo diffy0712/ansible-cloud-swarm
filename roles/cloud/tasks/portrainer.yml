@@ -1,0 +1,31 @@
+---
+  - name: Create docker network for monitoring
+    docker_network:
+      name: monitoring-public
+      driver: overlay
+
+  - name: Create swarm portainer stack directory
+    file:
+      path: "{{ cloud_swarm_root }}portainer"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy docker-compose
+    template:
+      src: ./templates/docker-compose.portainer.yml.j2
+      dest: '{{ cloud_swarm_root }}portainer/docker-compose.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      trim_blocks: false
+      
+  - name: Deploy swarm portrainer stack
+    docker_stack:
+      state: present
+      name: "{{ cloud_swarm_stack }}-portainer"
+      compose:
+        - '{{ cloud_swarm_root }}portainer/docker-compose.yml'
+      prune: true
+      with_registry_auth: true

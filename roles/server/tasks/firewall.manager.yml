@@ -1,0 +1,15 @@
+---
+## Add extra task to ensure firewall is configured correctly for manager servers
+- name: Permit traffic in default zone for https service
+  ansible.posix.firewalld:
+    service: https
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Permit traffic in default zone for http service
+  ansible.posix.firewalld:
+    service: http
+    permanent: yes
+    immediate: yes
+    state: enabled

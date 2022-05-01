@@ -1,0 +1,27 @@
+---
+  - name: 'Set timezone'
+    include: ./timezone.yml
+
+  - name: 'Manage /etc/hosts'
+    include: ./hosts.yml
+
+  - name: 'Manage users'
+    include: ./users.yml
+
+  - name: 'Set message of the day and login banner'
+    include: ./login.yml
+
+  - name: 'Install all required packages'
+    include: ./packages.yml
+
+  - name: 'Secure ssh'
+    include: ./ssh.yml
+
+  - name: 'Configure firewall'
+    include: ./firewall.yml
+
+  - name: 'Install and configure docker'
+    include: ./docker.yml
+
+  - name: 'Sez up cli for users'
+    include: ./cli.yml

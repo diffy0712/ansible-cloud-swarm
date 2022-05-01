@@ -1,0 +1,27 @@
+---
+- include_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - name: docker
+      - name: jsondiff
+
+- include_role:
+    name: geerlingguy.docker
+  vars:
+    # Edition can be one of: 'ce' (Community Edition) or 'ee' (Enterprise Edition).
+    docker_edition: 'ce'
+    docker_package: "docker-{{ docker_edition }}"
+    docker_package_state: present
+    docker_service_state: started
+    docker_service_enabled: true
+    docker_restart_handler_state: restarted
+
+    docker_install_compose: true
+    docker_compose_version: "1.26.0"
+    docker_compose_arch: x86_64
+    docker_compose_path: /usr/local/bin/docker-compose
+
+    docker_users:
+      - ansible
+      - diffy0712

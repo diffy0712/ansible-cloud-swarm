@@ -1,0 +1,117 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: true
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    entryPoint: metrics
+    manualRouting: false
+
+log:
+  level: DEBUG
+
+# log:
+#   level: DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+#   format: common  # common, json, logfmt
+#   filePath: /var/log/traefik/traefik.log
+
+# accesslog:
+#   format: common  # common, json, logfmt
+#   filePath: /var/log/traefik/access.log
+
+api:
+ dashboard: true 
+ insecure: true
+
+http:
+  middlewares:
+    admin-auth:
+      basicAuth:
+        users:
+    cors-headers:
+      headers:
+        sslRedirect: true
+        addVaryHeader: true
+        accessControlAllowCredentials: true
+        accessControlMaxAge: 100
+        accessControlAllowMethods:
+          - "*"
+        accessControlAllowOriginList:
+          - https://developi.hu
+          - https://homer.developi.hu
+          - https://traefik.developi.hu
+          - https://prometheus.developi.hu
+          - https://portainer.developi.hu
+          - https://grafana.developi.hu
+        accessControlAllowHeaders:
+          - "*"
+    # Redirect non-www URLs to their www equivalent
+    # Use with traefik.http.routers.myRouter.middlewares: "redirect-non-www-to-www@file"
+    redirect-non-www-to-www:
+      # Redirect a request from an url to another with regex matching and replacement
+      redirectregex:
+        # Apply a permanent redirection (HTTP 301)
+        permanent: true
+        # The regular expression to match and capture elements from the request URL
+        regex: "^https?://(?:www\\.)?(.+)"
+        # How to modify the URL to have the new target URL
+        replacement: "https://www.${1}"
+  
+    # Redirect www URLs to their non-www equivalent
+    # Use with traefik.http.routers.myRouter.middlewares: "redirect-www-to-non-www@file"
+    redirect-www-to-non-www:
+      # Redirect a request from an url to another with regex matching and replacement
+      redirectregex:
+        # Apply a permanent redirection (HTTP 301)
+        permanent: true
+        # The regular expression to match and capture elements from the request URL
+        regex: "^https?://www\\.(.+)"
+        # How to modify the URL to have the new target URL
+        replacement: "https://${1}"
+
+entryPoints:
+  http:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+
+  https:
+    address: :443
+
+  metrics:
+    address: :8082
+
+certificatesResolvers:
+  staging:
+    acme:
+      email: david.ferencz@protonmail.com
+      storage: /certificates/acme.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: http
+
+  production:
+    acme:
+      email: david.ferencz@protonmail.com
+      storage: /certificates/acme.json
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: http
+
+providers:
+  docker:
+    constraints: Label(`traefik.constraint-label`, `traefik-public`)
+    watch: true
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    swarmMode: true
+  file:
+    # watch for dynamic configuration changes
+    directory: /etc/traefik
+    watch: true

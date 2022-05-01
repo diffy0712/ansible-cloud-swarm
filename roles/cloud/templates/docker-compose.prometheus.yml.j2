@@ -1,0 +1,46 @@
+version: '3.2'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.34.0
+    restart: unless-stopped
+    volumes:
+      - ./config:/etc/prometheus
+      - prometheus-data:/prometheus
+    networks:
+      - default
+      - traefik-public
+      - monitoring-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 128M
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.prometheus.entrypoints=http, https
+        - traefik.http.routers.prometheus.middlewares=admin-auth@file, cors-headers@file
+        - traefik.http.routers.prometheus.rule=Host(`prometheus.developi.hu`)
+        - traefik.http.routers.prometheus.tls=true
+        - traefik.http.routers.prometheus.tls.certresolver={{ traefik_tls_certresolver }}
+        - traefik.http.services.prometheus-service.loadbalancer.server.port=9090
+
+networks:
+  # Use the previously created public network "traefik-public", shared with other
+  # services that need to be publicly available via this Traefik
+  traefik-public:
+    external: true
+
+  monitoring-public:
+    external: true
+
+volumes:
+  prometheus-data:
+    driver: local

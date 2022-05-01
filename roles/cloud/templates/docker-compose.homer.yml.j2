@@ -1,0 +1,37 @@
+version: '3.2'
+
+services:
+  homer:
+    image: b4bz/homer:latest
+    restart: unless-stopped
+    volumes:
+      - ./assets/:/www/assets
+    networks:
+      - default
+      - traefik-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.homer.entrypoints=http, https
+        - traefik.http.routers.homer.middlewares=admin-auth@file, cors-headers@file
+        - traefik.http.routers.homer.rule=Host(`homer.developi.hu`)
+        - traefik.http.routers.homer.tls=true
+        - traefik.http.routers.homer.tls.certresolver={{ traefik_tls_certresolver }}
+        - traefik.http.services.homer-service.loadbalancer.server.port=8080
+
+networks:
+  # Use the previously created public network "traefik-public", shared with other
+  # services that need to be publicly available via this Traefik
+  traefik-public:
+    external: true

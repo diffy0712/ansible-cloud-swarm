@@ -1,0 +1,16 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: true
+    update_cache: true
+    cache_valid_time: 600
+  when: ansible_os_family == 'Debian'
+  changed_when: false
+
+- name: Install packages
+  package:
+    name:
+    - vim
+    - git
+    - wget
+    - make

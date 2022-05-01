@@ -1,0 +1,26 @@
+---
+  - name: Create swarm node_exporter stack directory
+    file:
+      path: "{{ cloud_swarm_root }}node_exporter"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      
+  - name: Copy docker-compose
+    template:
+      src: ./templates/docker-compose.node-exporter.yml.j2
+      dest: '{{ cloud_swarm_root }}node_exporter/docker-compose.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      trim_blocks: false
+      
+  - name: Deploy swarm node_exporter stack
+    docker_stack:
+      state: present
+      name: "{{ cloud_swarm_stack }}-node_exporter"
+      compose:
+        - '{{ cloud_swarm_root }}node_exporter/docker-compose.yml'
+      prune: true
+      with_registry_auth: true

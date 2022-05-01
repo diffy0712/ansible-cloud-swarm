@@ -1,0 +1,42 @@
+---
+  - name: Create swarm prometheus stack directory
+    file:
+      path: "{{ cloud_swarm_root }}prometheus"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Create config directory
+    file:
+      path: "{{ cloud_swarm_root }}prometheus/config"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy prometheus config
+    copy:
+      src: ./files/prometheus.yml
+      dest: '{{ cloud_swarm_root }}prometheus/config/prometheus.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      
+  - name: Copy docker-compose
+    template:
+      src: ./templates/docker-compose.prometheus.yml.j2
+      dest: '{{ cloud_swarm_root }}prometheus/docker-compose.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      trim_blocks: false
+      
+  - name: Deploy swarm prometheus stack
+    docker_stack:
+      state: present
+      name: "{{ cloud_swarm_stack }}-prometheus"
+      compose:
+        - '{{ cloud_swarm_root }}prometheus/docker-compose.yml'
+      prune: true
+      with_registry_auth: true

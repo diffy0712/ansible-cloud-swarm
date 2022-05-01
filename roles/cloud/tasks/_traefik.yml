@@ -1,0 +1,63 @@
+---
+- name: Create docker network for traefik
+  docker_network:
+    name: traefik-public
+    driver: overlay
+    
+- name: Create swarm traefik stack directory
+  file:
+    path: "{{ cloud_swarm_root }}traefik"
+    state: directory
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Create storage directory
+  file:
+    path: "{{ cloud_swarm_root }}traefik/storage"
+    state: directory
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Create certificates storage directory
+  file:
+    path: "{{ cloud_swarm_root }}traefik/storage/certificates"
+    state: directory
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Create config directory
+  file:
+    path: "{{ cloud_swarm_root }}traefik/config"
+    state: directory
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+
+- name: Copy traefik config
+  copy:
+    src: ./files/traefik.yml
+    dest: '{{ cloud_swarm_root }}traefik/config/traefik.yml'
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+    
+- name: Copy docker-compose
+  template:
+    src: ./templates/docker-compose.traefik.yml.j2
+    dest: '{{ cloud_swarm_root }}traefik/docker-compose.yml'
+    owner: "{{ sysadmins.ansible.sysadmin_user }}"
+    group: docker
+    mode: '0755'
+    trim_blocks: false
+    
+- name: Deploy swarm traefik stack
+  docker_stack:
+    state: present
+    name: "{{ cloud_swarm_stack }}-traefik"
+    compose:
+      - '{{ cloud_swarm_root }}traefik/docker-compose.yml'
+    prune: true
+    with_registry_auth: true

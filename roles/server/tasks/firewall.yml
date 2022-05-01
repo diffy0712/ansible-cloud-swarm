@@ -1,0 +1,38 @@
+---
+## Ensure firewall is configured and started
+## To add extra firewall tasks just use the firewall.{server_type}.yml file.
+## 
+## NOTE:  Firewalld does not need a handler to restart after change since it will automatically update
+##        This is just a basic configuration
+- name: Ensure firwalld and its dependencies are installed
+  package:
+    name:
+    - firewalld
+
+- name: Ensure firewalld is running and enabled
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Permit traffic in default zone for dhcpv6-client service
+  ansible.posix.firewalld:
+    service: dhcpv6-client
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Permit traffic in default zone for ssh service
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Inlcude manager firewall task
+  include: ./firewall.manager.yml
+  when: node_type == 'manager'
+
+- name: Inlcude node firewall task
+  include: ./firewall.node.yml
+  when: node_type == 'node'

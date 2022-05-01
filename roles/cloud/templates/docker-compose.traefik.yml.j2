@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v2.6
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - monitoring-public
+      - traefik-public
+    volumes:
+      - ./config/traefik.yml:/etc/traefik/traefik.yml
+      # Create a volume to store the certificates, there is a constraint to make sure
+      # Traefik is always deployed to the same Docker node with the same volume containing
+      # the HTTPS certificates
+      - ./storage/certificates:/certificates
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      placement:
+        constraints:
+          # Make the traefik service run only on the node with this label
+          # as the node with it has the volume for the certificates
+          - node.labels.traefik-public.traefik-public-certificates == true
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 128M
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.traefik.entrypoints=http, https
+        - traefik.http.routers.traefik.middlewares=admin-auth@file, cors-headers@file
+        - traefik.http.routers.traefik.rule=Host(`traefik.developi.hu`)
+        - traefik.http.routers.traefik.tls=true
+        - traefik.http.routers.traefik.tls.certresolver={{ traefik_tls_certresolver }}
+        - traefik.http.services.traefik-service.loadbalancer.server.port=8080
+
+networks:
+  # Use the previously created public network "traefik-public", shared with other
+  # services that need to be publicly available via this Traefik
+  traefik-public:
+    external: true
+
+  monitoring-public:
+    external: true

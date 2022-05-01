@@ -1,0 +1,6 @@
+---
+roles:
+  - 'diffy0712.sysadmin_user_manager'
+  - 'geerlingguy.docker'
+  - 'geerlingguy.pip'
+  - 'tmiller02.neofetch'

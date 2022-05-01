@@ -1,0 +1,34 @@
+---
+  - name: Create swarm homer stack directory
+    file:
+      path: "{{ cloud_swarm_root }}homer"
+      state: directory
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+
+  - name: Copy homer assets
+    copy:
+      src: ./files/homer/assets
+      dest: '{{ cloud_swarm_root }}homer'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      
+  - name: Copy docker-compose
+    template:
+      src: ./templates/docker-compose.homer.yml.j2
+      dest: '{{ cloud_swarm_root }}homer/docker-compose.yml'
+      owner: "{{ sysadmins.ansible.sysadmin_user }}"
+      group: docker
+      mode: '0755'
+      trim_blocks: false
+      
+  - name: Deploy swarm homer stack
+    docker_stack:
+      state: present
+      name: "{{ cloud_swarm_stack }}-homer"
+      compose:
+        - '{{ cloud_swarm_root }}homer/docker-compose.yml'
+      prune: true
+      with_registry_auth: true

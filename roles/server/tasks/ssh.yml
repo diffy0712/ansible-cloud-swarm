@@ -1,0 +1,43 @@
+---
+- name: Update ssh parameters
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    firstmatch: yes
+    regexp: "^#?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    insertafter: EOF
+  with_items:
+    - { key: 'Protocol', value: '2' }
+    - { key: 'Port', value: '{{ ansible_port }}' }
+    - { key: 'ClientAliveInterval', value: '360' }
+    - { key: 'ClientAliveCountMax', value: '0' }
+    - { key: 'MaxStartups', value: '6' }
+    - { key: 'LoginGraceTime', value: '60' }
+    - { key: 'AllowUsers', value: '{{ sysadmins.ansible.sysadmin_user }} {{ sysadmins.diffy0712.sysadmin_user }}' }
+    - { key: 'DenyUsers', value: 'root' }
+    - { key: 'DenyGroups', value: 'root' }
+
+    - { key: 'AuthenticationMethods', value: 'publickey' }
+    - { key: 'PubkeyAuthentication', value: 'yes' }
+
+    - { key: 'PermitRootLogin', value: 'no' }
+    - { key: 'PasswordAuthentication', value: 'no' }
+    - { key: 'ChallengeResponseAuthentication', value: 'no' }
+    - { key: 'X11Forwarding', value: 'no' }
+    - { key: 'HostbasedAuthentication', value: 'no' }
+    - { key: 'UsePAM', value: 'no' }
+    - { key: 'PermitEmptyPasswords', value: 'no' }
+
+    - { key: 'RSAAuthentication', value: 'yes' }
+    - { key: 'IgnoreRhosts', value: 'yes' }
+    - { key: 'RhostsAuthentication', value: 'no' }
+    - { key: 'UseDNS', value: 'yes' }
+    - { key: 'MaxAuthTries', value: '3' }
+    - { key: 'PrintLastLog', value: 'yes' }
+    - { key: 'PrintMotd', value: 'yes' }
+    - { key: 'Banner', value: '/etc/issue.net' }
+    - { key: 'AddressFamily', value: 'inet' }
+    - { key: 'LogLevel', value: 'VERBOSE' }
+  notify:
+    - restart ssh
