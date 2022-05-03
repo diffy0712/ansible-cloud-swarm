@@ -31,6 +31,7 @@ http:
     admin-auth:
       basicAuth:
         users:
+          - {{ traefik_basic_auth_user }}
     cors-headers:
       headers:
         sslRedirect: true
@@ -40,12 +41,11 @@ http:
         accessControlAllowMethods:
           - "*"
         accessControlAllowOriginList:
-          - https://developi.hu
-          - https://homer.developi.hu
-          - https://traefik.developi.hu
-          - https://prometheus.developi.hu
-          - https://portainer.developi.hu
-          - https://grafana.developi.hu
+          - https://{{ homer_domain }}
+          - https://{{ portainer_domain }}
+          - https://{{ prometheus_domain }}
+          - https://{{ grafana_domain }}
+          - https://{{ traefik_domain }}
         accessControlAllowHeaders:
           - "*"
     # Redirect non-www URLs to their www equivalent
@@ -90,7 +90,7 @@ entryPoints:
 certificatesResolvers:
   staging:
     acme:
-      email: david.ferencz@protonmail.com
+      email: {{ traefik_letsencrypt_email }}
       storage: /certificates/acme.json
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       httpChallenge:
@@ -98,7 +98,7 @@ certificatesResolvers:
 
   production:
     acme:
-      email: david.ferencz@protonmail.com
+      email: {{ traefik_letsencrypt_email }}
       storage: /certificates/acme.json
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       httpChallenge:

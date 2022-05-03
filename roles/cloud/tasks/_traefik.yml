@@ -35,14 +35,15 @@
     owner: "{{ sysadmins.ansible.sysadmin_user }}"
     group: docker
     mode: '0755'
-
+    
 - name: Copy traefik config
-  copy:
-    src: ./files/traefik.yml
+  template:
+    src: ./files/traefik.yml.j2
     dest: '{{ cloud_swarm_root }}traefik/config/traefik.yml'
     owner: "{{ sysadmins.ansible.sysadmin_user }}"
     group: docker
     mode: '0755'
+    trim_blocks: false
     
 - name: Copy docker-compose
   template:
