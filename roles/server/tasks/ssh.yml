@@ -14,7 +14,7 @@
     - { key: 'ClientAliveCountMax', value: '0' }
     - { key: 'MaxStartups', value: '6' }
     - { key: 'LoginGraceTime', value: '60' }
-    - { key: 'AllowUsers', value: '{{ sysadmins.ansible.sysadmin_user }} {{ sysadmins.diffy0712.sysadmin_user }}' }
+    - { key: 'AllowUsers', value: '{{ sysadmins.ansible.sysadmin_user }} {{ sysadmins.sysadmin.sysadmin_user }}' }
     - { key: 'DenyUsers', value: 'root' }
     - { key: 'DenyGroups', value: 'root' }
 

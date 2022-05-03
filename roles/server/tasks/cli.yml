@@ -5,11 +5,11 @@
 
 - name: Ensure neofetch is loaded with bash
   ansible.builtin.lineinfile:
-    path: "/home/{{ sysadmins.diffy0712.sysadmin_user }}/.bashrc"
+    path: "/home/{{ sysadmins.sysadmin.sysadmin_user }}/.bashrc"
     regexp: '^neofetch'
     line: neofetch
-    owner: "{{ sysadmins.diffy0712.sysadmin_user }}"
-    group: "{{ sysadmins.diffy0712.sysadmin_user }}"
+    owner: "{{ sysadmins.sysadmin.sysadmin_user }}"
+    group: "{{ sysadmins.sysadmin.sysadmin_user }}"
     mode: '0644'
 
 - name: "Set a hostname to {{ inventory_hostname }}"

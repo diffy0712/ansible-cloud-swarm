@@ -11,8 +11,8 @@
 - include_role:
     name: diffy0712.sysadmin_user_manager
   vars:
-    sysadmin_user: "{{ sysadmins.diffy0712.sysadmin_user }}"
-    sysadmin_password: "{{ sysadmins.diffy0712.sysadmin_password }}"
-    sysadmin_shell: "{{ sysadmins.diffy0712.sysadmin_shell }}"
-    sysadmin_issudoer: "{{ sysadmins.diffy0712.sysadmin_issudoer }}"
-    sysadmin_keys: "{{ sysadmins.diffy0712.sysadmin_keys }}"
+    sysadmin_user: "{{ sysadmins.sysadmin.sysadmin_user }}"
+    sysadmin_password: "{{ sysadmins.sysadmin.sysadmin_password }}"
+    sysadmin_shell: "{{ sysadmins.sysadmin.sysadmin_shell }}"
+    sysadmin_issudoer: "{{ sysadmins.sysadmin.sysadmin_issudoer }}"
+    sysadmin_keys: "{{ sysadmins.sysadmin.sysadmin_keys }}"
