@@ -50,16 +50,16 @@ ucollections:
 .PHONY: prepare
 prepare: ## Prepare the server(s) for maintainance of a host or a group of hosts. Select a host/group from inventory. Use s variable to add args. example: make prepare host=test s="-tag test"
 		@[ "${host}" ] || ( echo "host is not set. Please select a host or a group from inventory"; exit 1 )
-		ansible-playbook -i $(inventory) --vault-password-file $(inventory_vault_pass) prepare.yml --limit ${host}  ${s}
+		ansible-playbook -i $(inventory_file) --vault-password-file $(inventory_vault_pass) prepare.yml --limit ${host} --extra-vars "inventory_path=$(inventory_path)" ${s}
 
 .PHONY: maintain
 maintain: ## Run maintainance playbook on the server(s) of a host or a group of hosts. Select a host/group from inventory. Use s variable to add args. example: make maintain host=test s="-tag test"
 		@[ "${host}" ] || ( echo "host is not set. Please select a host or a group from inventory"; exit 1 )
-		ansible-playbook -i $(inventory) --vault-password-file $(inventory_vault_pass) maintain.yml --limit ${host} ${s}
+		ansible-playbook -i $(inventory_file) --vault-password-file $(inventory_vault_pass) maintain.yml --limit ${host} --extra-vars "inventory_path=$(inventory_path)" ${s}
 
 .PHONY: invlist
 invlist: ## List variables from inventory
-		ansible-inventory -i $(inventory) --vault-password-file $(inventory_vault_pass) --list
+		ansible-inventory -i $(inventory_file) --vault-password-file $(inventory_vault_pass) --extra-vars "inventory_path=$(inventory_path)" --list
 
 
 

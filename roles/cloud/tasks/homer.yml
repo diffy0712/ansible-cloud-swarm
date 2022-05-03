@@ -9,12 +9,12 @@
 
   - name: Copy homer assets
     copy:
-      src: ./files/homer/assets
+      src: "{{ inventory_path }}/files/homer/assets"
       dest: '{{ cloud_swarm_root }}homer'
       owner: "{{ sysadmins.ansible.sysadmin_user }}"
       group: docker
       mode: '0755'
-      
+
   - name: Copy docker-compose
     template:
       src: ./files/docker-compose.homer.yml.j2
