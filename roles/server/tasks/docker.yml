@@ -23,5 +23,5 @@
     docker_compose_path: /usr/local/bin/docker-compose
 
     docker_users:
-      - ansible
-      - sysadmin
+      - "{{ sysadmins.ansible.sysadmin_user }}"
+      - "{{ sysadmins.sysadmin.sysadmin_user }}"
