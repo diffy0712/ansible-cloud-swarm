@@ -33,19 +33,19 @@ udep: uroles ucollections
 
 .PHONY: iroles ## Install all roles
 iroles: 
-		ansible-galaxy install -r requirements.roles.yml -p roles
+		ansible-galaxy install -r requirements.roles.yml -p vendor/roles
 
 .PHONY: uroles ## Update all roles
 uroles:
-		ansible-galaxy install -r requirements.roles.yml -p roles --force
+		ansible-galaxy install -r requirements.roles.yml -p vendor/roles --force
 
 .PHONY: icollections ## Install all collections
 icollections:
-		ansible-galaxy collection install -r requirements.collections.yml -p collections
+		ansible-galaxy collection install -r requirements.collections.yml -p vendor/collections
 
 .PHONY: ucollections ## Update all collections
 ucollections:
-		ansible-galaxy collection install -r requirements.collections.yml -p collections --force
+		ansible-galaxy collection install -r requirements.collections.yml -p vendor/collections --force
 
 .PHONY: prepare
 prepare: ## Prepare the server(s) for maintainance of a host or a group of hosts. Select a host/group from inventory. Use s variable to add args. example: make prepare host=test s="-tag test"
