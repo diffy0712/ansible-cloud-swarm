@@ -29,7 +29,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.grafana.entrypoints=http, https
         - traefik.http.routers.grafana.middlewares=cors-headers@file
-        - traefik.http.routers.grafana.rule=Host(`grafana.developi.hu`)
+        - traefik.http.routers.grafana.rule=Host(`{{ grafana_domain }}`)
         - traefik.http.routers.grafana.tls=true
         - traefik.http.routers.grafana.tls.certresolver={{ traefik_tls_certresolver }}
         - traefik.http.services.grafana-service.loadbalancer.server.port=3000

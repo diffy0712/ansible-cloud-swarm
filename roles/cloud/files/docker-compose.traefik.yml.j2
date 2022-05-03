@@ -34,7 +34,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.traefik.entrypoints=http, https
         - traefik.http.routers.traefik.middlewares=admin-auth@file, cors-headers@file
-        - traefik.http.routers.traefik.rule=Host(`traefik.developi.hu`)
+        - traefik.http.routers.traefik.rule=Host(`{{ traefik_domain }}`)
         - traefik.http.routers.traefik.tls=true
         - traefik.http.routers.traefik.tls.certresolver={{ traefik_tls_certresolver }}
         - traefik.http.services.traefik-service.loadbalancer.server.port=8080

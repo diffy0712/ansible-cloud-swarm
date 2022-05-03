@@ -41,7 +41,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.portainer.entrypoints=http, https
         - traefik.http.routers.portainer.middlewares=cors-headers@file
-        - traefik.http.routers.portainer.rule=Host(`portainer.developi.hu`)
+        - traefik.http.routers.portainer.rule=Host(`{{ portainer_domain }}`)
         - traefik.http.routers.portainer.tls=true
         - traefik.http.routers.portainer.tls.certresolver={{ traefik_tls_certresolver }}
         - traefik.http.services.portainer-service.loadbalancer.server.port=9000

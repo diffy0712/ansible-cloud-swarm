@@ -46,7 +46,7 @@
     
 - name: Copy docker-compose
   template:
-    src: ./templates/docker-compose.traefik.yml.j2
+    src: ./files/docker-compose.traefik.yml.j2
     dest: '{{ cloud_swarm_root }}traefik/docker-compose.yml'
     owner: "{{ sysadmins.ansible.sysadmin_user }}"
     group: docker

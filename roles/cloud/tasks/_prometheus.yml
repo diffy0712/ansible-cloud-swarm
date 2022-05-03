@@ -25,7 +25,7 @@
       
   - name: Copy docker-compose
     template:
-      src: ./templates/docker-compose.prometheus.yml.j2
+      src: ./files/docker-compose.prometheus.yml.j2
       dest: '{{ cloud_swarm_root }}prometheus/docker-compose.yml'
       owner: "{{ sysadmins.ansible.sysadmin_user }}"
       group: docker

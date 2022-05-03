@@ -25,7 +25,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.homer.entrypoints=http, https
         - traefik.http.routers.homer.middlewares=admin-auth@file, cors-headers@file
-        - traefik.http.routers.homer.rule=Host(`homer.developi.hu`)
+        - traefik.http.routers.homer.rule=Host(`{{ homer_domain }}`)
         - traefik.http.routers.homer.tls=true
         - traefik.http.routers.homer.tls.certresolver={{ traefik_tls_certresolver }}
         - traefik.http.services.homer-service.loadbalancer.server.port=8080

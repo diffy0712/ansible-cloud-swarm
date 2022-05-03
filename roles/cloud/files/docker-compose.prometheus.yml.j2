@@ -27,7 +27,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.prometheus.entrypoints=http, https
         - traefik.http.routers.prometheus.middlewares=admin-auth@file, cors-headers@file
-        - traefik.http.routers.prometheus.rule=Host(`prometheus.developi.hu`)
+        - traefik.http.routers.prometheus.rule=Host(`{{ prometheus_domain }}`)
         - traefik.http.routers.prometheus.tls=true
         - traefik.http.routers.prometheus.tls.certresolver={{ traefik_tls_certresolver }}
         - traefik.http.services.prometheus-service.loadbalancer.server.port=9090
