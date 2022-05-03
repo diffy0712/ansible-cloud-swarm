@@ -1,0 +1,5 @@
+[managers]
+demo-cloud-manager
+
+[nodes]
+demo-cloud-websites
