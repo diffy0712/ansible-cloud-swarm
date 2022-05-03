@@ -2,7 +2,7 @@
 - name: Set a message of the day
   copy:
     dest: /etc/motd
-    src: files/motd
+    content: "{{ ssh_message_of_day }}"
     owner: root
     group: root
     mode: 0644
@@ -10,7 +10,7 @@
 - name: Set a login banner
   copy:
     dest: "{{ item }}"
-    src: files/issue
+    content: "{{ ssh_login_banner }}"
     owner: root
     group: root
     mode: 0644
