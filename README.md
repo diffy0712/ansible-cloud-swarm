@@ -8,7 +8,8 @@ Prepare and maintain the manager and worker server's of the a cloud with ansible
 3. A `.vault_pass` file with the vault passphrase is required in the root folder for ansible to decrypt the encrypted variables/files.
 ```echo "{some secret vault passphrase}" > .vault_pass```  
 [Read more about ansible vault here](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
-4. Create your inventory and host_vars (using host_vars/default.yml)
+1. At least one domain, which `.` and `*.` dns A records is redirected to the manager servers ip address.
+2. Create your inventory and host_vars (using host_vars/default.yml)
 
 ## Playbooks
 
