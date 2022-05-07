@@ -56,6 +56,33 @@ ansible-playbook maintain.yml  [--limit <host_or_group_name>]
 make maintain host=all
 ```
 
+# Tools
+
+## Homer
+![](screenshots/homer.jpg)
+
+A place for all the links to easily access all tools and apps from one place.
+
+## Traefik
+![](screenshots/traefik.jpg)
+
+Edge router for services.
+
+## Portainer
+![](screenshots/portainer.jpg)
+
+A tool to manage docker services.
+
+## Grafana
+![](screenshots/grafana.jpg)
+
+Visualizer for monitoring and alerts.
+
+## Prometheus
+![](screenshots/prometheus.jpg)
+
+A central storage for logs.
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
