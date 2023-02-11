@@ -62,7 +62,6 @@ invlist: ## List variables from inventory
 		ansible-inventory -i $(inventory_file) --vault-password-file $(inventory_vault_pass) --extra-vars "inventory_path=$(inventory_path)" --list
 
 
-
 .PHONY: help
 help: ## Display this help message
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

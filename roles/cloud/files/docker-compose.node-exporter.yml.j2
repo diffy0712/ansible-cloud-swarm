@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   node_exporter:
-    image: quay.io/prometheus/node-exporter:v1.3.1
+    image: quay.io/prometheus/node-exporter:v1.5.0
     restart: unless-stopped
     networks:
       - monitoring-public
@@ -19,7 +19,7 @@ services:
           memory: 64M
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.44.0
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
     restart: unless-stopped
     networks:
       - monitoring-public
