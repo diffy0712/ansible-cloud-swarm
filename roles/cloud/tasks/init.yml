@@ -5,6 +5,12 @@
       password: "{{ gitlab_registry_authkey }}"
       registry: registry.gitlab.com
 
+  - name: login to GitHub remote registry using your account
+    docker_login:
+      username: "{{ github_registry_username }}"
+      password: "{{ github_registry_authkey }}"
+      registry: ghcr.io
+
   - name: Inlcude manager init task
     include: ./init.manager.yml
     when: node_type == 'manager'
