@@ -30,9 +30,9 @@
     state: enabled
 
 - name: Inlcude manager firewall task
-  include: ./firewall.manager.yml
+  include_tasks: ./firewall.manager.yml
   when: node_type == 'manager'
 
 - name: Inlcude node firewall task
-  include: ./firewall.node.yml
+  include_tasks: ./firewall.node.yml
   when: node_type == 'node'

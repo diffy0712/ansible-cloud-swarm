@@ -1,27 +1,31 @@
 ---
   - name: 'Set timezone'
-    include: ./timezone.yml
+    include_tasks: ./timezone.yml
 
   - name: 'Manage /etc/hosts'
-    include: ./hosts.yml
+    include_tasks: ./hosts.yml
 
   - name: 'Manage users'
-    include: ./users.yml
+    include_tasks: ./users.yml
 
   - name: 'Set message of the day and login banner'
-    include: ./login.yml
+    include_tasks: ./login.yml
 
   - name: 'Install all required packages'
-    include: ./packages.yml
+    include_tasks: ./packages.yml
+
+  ## https://github.com/geerlingguy/ansible-role-pip/issues/57#issuecomment-2108657898
+  - name: 'Fix python'
+    include_tasks: ./python_fix.yml
 
   - name: 'Secure ssh'
-    include: ./ssh.yml
+    include_tasks: ./ssh.yml
 
-  - name: 'Configure firewall'
-    include: ./firewall.yml
+  ##- name: 'Configure firewall'
+  ##  include_tasks: ./firewall.yml
 
   - name: 'Install and configure docker'
-    include: ./docker.yml
+    include_tasks: ./docker.yml
 
   - name: 'Sez up cli for users'
-    include: ./cli.yml
+    include_tasks: ./cli.yml

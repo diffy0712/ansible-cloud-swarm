@@ -2,7 +2,7 @@
   become: true
   gather_facts: true
   vars:
-    ansible_user: root
+    ansible_user: ubuntu
   pre_tasks:
     - name: Update apt cache.
       apt:
@@ -13,4 +13,4 @@
 
   tasks:
     - name: 'Create users'
-      include: ./roles/server/tasks/users.yml
+      include_tasks: ./roles/server/tasks/users.yml

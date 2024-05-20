@@ -1,9 +1,4 @@
 ---
-  - name: Create docker network for monitoring
-    docker_network:
-      name: monitoring-public
-      driver: overlay
-
   - name: Create swarm portainer stack directory
     file:
       path: "{{ cloud_swarm_root }}portainer"

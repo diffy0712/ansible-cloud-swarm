@@ -1,20 +1,20 @@
 ---
-  - include: './init.yml'
+  - include_tasks: './init.yml'
 
-  - include: './_traefik.yml'
+  - include_tasks: './_traefik.yml'
     when: node_type == 'manager'
 
-  - include: './portrainer.yml'
-    when: node_type == 'manager'
+  - include_tasks: './portrainer.yml'
+    when: node_type == 'manager' and portainer_enabled == true
 
-  - include: './_prometheus.yml'
-    when: node_type == 'manager'
+  - include_tasks: './_prometheus.yml'
+    when: node_type == 'manager' and prometheus_enabled == true
 
-  - include: './_grafana.yml'
-    when: node_type == 'manager'
+  - include_tasks: './_grafana.yml'
+    when: node_type == 'manager' and grafana_enabled == true
 
-  - include: './_node_exporter.yml'
-    when: node_type == 'manager'
+  - include_tasks: './_node_exporter.yml'
+    when: node_type == 'manager' and node_exporter_enabled == true
 
-  - include: './homer.yml'
-    when: node_type == 'manager'
+  - include_tasks: './homer.yml'
+    when: node_type == 'manager' and homer_enabled == true
